@@ -24,6 +24,14 @@ function App() {
     setTarefas(tarefas.filter(tarefa => tarefa.id !== id));
   };
 
+  const alternarFeita = (id) => {
+  console.log("Alternando tarefa ID:", id);
+  setTarefas(tarefas.map(tarefa =>
+      tarefa.id === id ? { ...tarefa, feita: !tarefa.feita } : tarefa
+    )
+  );
+};
+
   return (
     <div className="container">
       <h1>Minhas Tarefas</h1>
@@ -38,11 +46,16 @@ function App() {
         <button onClick={adicionarTarefa}>Adicionar</button>
       </div>
 
-      <div className="lista-tarefas">
+        <div className="lista-tarefas">
         {tarefas.map(tarefa => (
-          <Tarefa key={tarefa.id} tarefa={tarefa} removerTarefa={removerTarefa} />
+            <Tarefa
+            key={tarefa.id}
+            tarefa={tarefa}
+            removerTarefa={removerTarefa}
+            alternarFeita={alternarFeita}
+            />
         ))}
-      </div>
+        </div>
     </div>
   );
 }

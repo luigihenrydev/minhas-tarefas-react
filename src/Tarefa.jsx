@@ -1,8 +1,18 @@
-function Tarefa({ tarefa, removerTarefa }) {
+function Tarefa({ tarefa, removerTarefa, alternarFeita }) {
   return (
-    <div className="tarefa">
-      <span>{tarefa.texto}</span>
-      <button onClick={() => removerTarefa(tarefa.id)}>X</button>
+    <div
+    className={`tarefa ${tarefa.feita ? 'feita' : ''}`}
+    onClick={() => alternarFeita(tarefa.id)}
+    >
+    <span>{tarefa.texto}</span>
+    <button
+        onClick={(e) => {
+        e.stopPropagation();
+        removerTarefa(tarefa.id);
+        }}
+    >
+        X
+    </button>
     </div>
   );
 }
