@@ -53,7 +53,9 @@ function App() {
           onChange={(e) => setTexto(e.target.value)}
           placeholder="Digite uma tarefa..."
         />
-        <button onClick={adicionarTarefa}>Adicionar</button>
+      <button className="botao-adicionar" onClick={adicionarTarefa}>
+         Adicionar
+      </button>
       </div>
       {tarefas.map((tarefa, index) => (
         <Tarefa
