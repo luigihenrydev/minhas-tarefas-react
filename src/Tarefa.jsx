@@ -1,18 +1,19 @@
 function Tarefa({ tarefa, removerTarefa, alternarFeita }) {
+  console.log('🔎 Renderizando tarefa:', tarefa);
   return (
     <div
-    className={`tarefa ${tarefa.feita ? 'feita' : ''}`}
-    onClick={() => alternarFeita(tarefa.id)}
+      className={`tarefa ${tarefa.feita ? 'feita' : ''}`}
+      onClick={() => alternarFeita(tarefa.id)}
     >
-    <span>{tarefa.texto}</span>
-    <button
+      <span>{tarefa.texto}</span>
+      <button
         onClick={(e) => {
-        e.stopPropagation();
-        removerTarefa(tarefa.id);
+          e.stopPropagation();
+          removerTarefa(tarefa.id);
         }}
-    >
+      >
         X
-    </button>
+      </button>
     </div>
   );
 }

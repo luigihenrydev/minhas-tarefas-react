@@ -1,61 +1,67 @@
-import { useState } from 'react';
-import './index.css';
+import { useState, useEffect } from 'react';
 import Tarefa from './Tarefa';
+import './index.css';
 
 function App() {
+  const [texto, setTexto] = useState('');
   const [tarefas, setTarefas] = useState([]);
-  const [novaTarefa, setNovaTarefa] = useState('');
+  const [carregado, setCarregado] = useState(false);
+
+  useEffect(() => {
+    const tarefasSalvas = localStorage.getItem('tarefas');
+    if (tarefasSalvas) {
+      setTarefas(JSON.parse(tarefasSalvas));
+    }
+    setCarregado(true);
+  }, []);
+
+  useEffect(() => {
+    if (!carregado) {
+      localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    }
+  }, [tarefas, carregado]);
 
   const adicionarTarefa = () => {
-    if (novaTarefa.trim() === '') return;
+    if (!texto.trim()) return;
 
-    const nova = {
+    const novaTarefa = {
       id: Date.now(),
-      texto: novaTarefa,
-      categoria: 'geral',
-      feita: false
+      texto,
+      feita: false,
     };
-
-    setTarefas([...tarefas, nova]);
-    setNovaTarefa('');
-  };
-
-  const removerTarefa = (id) => {
-    setTarefas(tarefas.filter(tarefa => tarefa.id !== id));
+    setTarefas([...tarefas, novaTarefa]);
+    setTexto('');
   };
 
   const alternarFeita = (id) => {
-  console.log("Alternando tarefa ID:", id);
-  setTarefas(tarefas.map(tarefa =>
+    const novas = tarefas.map((tarefa) =>
       tarefa.id === id ? { ...tarefa, feita: !tarefa.feita } : tarefa
-    )
-  );
-};
+    );
+    setTarefas(novas);
+  };
+
+  const removerTarefa = (id) => {
+    setTarefas(tarefas.filter((tarefa) => tarefa.id !== id));
+  };
 
   return (
     <div className="container">
       <h1>Minhas Tarefas</h1>
+      <input
+        value={texto}
+        onChange={(e) => setTexto(e.target.value)}
+        placeholder="Digite uma tarefa..."
+      />
+      <button onClick={adicionarTarefa}>Adicionar</button>
 
-      <div className="formulario">
-        <input
-          type="text"
-          placeholder="Digite uma tarefa..."
-          value={novaTarefa}
-          onChange={e => setNovaTarefa(e.target.value)}
+      {tarefas.map((tarefa, index) => (
+        <Tarefa
+          key={`${tarefa.id}-${index}`}
+          tarefa={tarefa}
+          removerTarefa={removerTarefa}
+          alternarFeita={alternarFeita}
         />
-        <button onClick={adicionarTarefa}>Adicionar</button>
-      </div>
-
-        <div className="lista-tarefas">
-        {tarefas.map(tarefa => (
-            <Tarefa
-            key={tarefa.id}
-            tarefa={tarefa}
-            removerTarefa={removerTarefa}
-            alternarFeita={alternarFeita}
-            />
-        ))}
-        </div>
+      ))}
     </div>
   );
 }
