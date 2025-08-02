@@ -47,13 +47,14 @@ function App() {
   return (
     <div className="container">
       <h1>Minhas Tarefas</h1>
-      <input
-        value={texto}
-        onChange={(e) => setTexto(e.target.value)}
-        placeholder="Digite uma tarefa..."
-      />
-      <button onClick={adicionarTarefa}>Adicionar</button>
-
+      <div className="formulario">
+        <input
+          value={texto}
+          onChange={(e) => setTexto(e.target.value)}
+          placeholder="Digite uma tarefa..."
+        />
+        <button onClick={adicionarTarefa}>Adicionar</button>
+      </div>
       {tarefas.map((tarefa, index) => (
         <Tarefa
           key={`${tarefa.id}-${index}`}
